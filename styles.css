@@ -1,0 +1,145 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    font-family: "Montserrat",sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #060017;
+    color: white;
+    -webkit-transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -ms-transition: opacity .5s ease-in-out;
+    -o-transition: opacity .5s ease-in-out;
+    transition: opacity .5s ease-in-out;
+}
+
+.content{
+    height: 55vh;
+    align-items: center;
+}
+
+.game-header{
+    background-image: url("https://images.pexels.com/photos/956981/milky-way-starry-sky-night-sky-star-956981.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+    background-position: center;
+    background-repeat: no-repeat;
+    height:25vh;
+    -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+}
+
+.game-footer{
+    background-image: url("https://images.pexels.com/photos/956981/milky-way-starry-sky-night-sky-star-956981.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 20vh;
+    -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0)), to(rgba(0,0,0,1)));
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1));
+    width: 100%;
+}
+
+.game-name{
+    color: white;
+    font-size: 10vmin;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.team-name{
+    font-style: italic;
+    font-size: 5vmin;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.question{
+    text-align: center;
+    font-size: 5vmin;
+}
+
+.result{
+    text-align: center;
+    font-size: 4vmin;
+}
+
+.answers-row{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.answer{
+    width: 42%;
+    font-size: 4vmin;
+    border: .4vmin solid white;
+    border-radius: 1vmin;
+    margin: 20px 10px;
+    padding: 0 1vmin;
+    -webkit-transition: opacity .5s ease-in;
+    -moz-transition: opacity .5s ease-in;
+    -ms-transition: opacity .5s ease-in;
+    -o-transition: opacity .5s ease-in;
+    transition: opacity .5s ease-in;
+}
+
+button{
+    font-family: "montserrat";
+    text-align: left;
+    background-color: rgba(0,0,0,0);
+	padding:0.35em 1.2em;
+	border:0.1em solid white;
+	margin: .8vmin;
+	border-radius:1vmin;
+	color:white;
+	transition: all 0.2s;
+    font-size: 4vmin;
+}
+
+button:hover{
+	color:rgba(0,0,0,1);
+	background-color:white;
+}
+
+button:active{
+	color:white;
+    background-color:#473d9e;
+}
+
+.next-container{
+    justify-content: center;
+    display: flex;
+}
+
+.home{
+    filter: invert(100%);
+    position: absolute;
+    height: 13vmin;
+    margin: 2vmin;
+    padding: 2vmin;
+    transition: all 0.2s;
+
+}
+
+.home:hover{
+    padding: 0;
+}
+
+.home:active{
+    filter: invert(75%);
+    padding: 1vmin;
+}
+
+.info{
+    right: 0px;
+}
+
+#result{
+    -webkit-transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -ms-transition: opacity .5s ease-in-out;
+    -o-transition: opacity .5s ease-in-out;
+    transition: opacity .5s ease-in-out;
+}
