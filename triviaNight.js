@@ -1,103 +1,106 @@
-document.body.style.opacity=0;
-setTimeout(function(){ document.body.style.opacity=1; }, 500);
 
-var question = {
-    text: "This is the question",
-    domID: document.getElementById("question")
-}
-var answer = {
-    a: {
-        text: "answer A text goes here",
-        isCorrect: true,
-        domID: document.getElementById("answer-a")
-    },
-    b: {
-        text: "answer B text goes here",
-        isCorrect: false,
-        domID: document.getElementById("answer-b")
-    },
-    c: {
-        text: "answer C text goes here",
-        isCorrect: false,
-        domID: document.getElementById("answer-c")
-    },
-    d: {
-        text: "answer D text goes here",
-        isCorrect: false,
-        domID: document.getElementById("answer-d")
-    }
+const dom = {
+    score: document.getElementById("score"),
+    question: document.getElementById("question"),
+    result: document.getElementById("result"),
+    answer: [document.getElementById("a0"), document.getElementById("a1"), document.getElementById("a2"), document.getElementById("a3")]
 }
 
-var testVar;
-var questionsAsked =0;
-var correctAnswers =0;
+var question = "Question";
+var answer = ["Answer", "Answer", "Answer", "Answer"];
+var score = 0;
+var total = 0;
+var answered = false;
 
 function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max+1));
+    return Math.floor(Math.random() * Math.floor(max + 1));
 }
-const actualAnswers = ["correct answer", "wrong", "wrong", "wrong"];
-const actualBool=[true, false, false, false];
 
-function randomizeQuestion(){
-    let arrayQuest = ["a","b","c","d"];
-    for(let i=arrayQuest.length-1; i>=0; i--){
-        let temp=getRandomInt(i);
-        answer[arrayQuest[temp]].text = actualAnswers[i];
-        answer[arrayQuest[temp]].domID.innerHTML = actualAnswers[i];
-        answer[arrayQuest[temp]].isCorrect = actualBool[i];
-        arrayQuest.splice(temp,1);
+function randomizeArray(arr) {
+    let output = []
+    let arrCopy = Object.assign([], arr);
+    for (i = arr.length - 1; i >= 0; i--) {
+        let temp = getRandomInt(i);
+        output.push(arrCopy[temp]);
+        arrCopy.splice(temp, 1);
+    }
+    return output;
+}
+
+function arenaQuiz(nhl) {
+    answer = [];
+    let randomTeamArray = randomizeArray(nhl.teams);
+    let teamsTruncated = randomTeamArray.splice(0, 4);
+    let teamName = teamsTruncated[0].name;
+    question = "Where do the " + teamName + " play?"
+    for (i = 3; i >= 0; i--) {
+        answer.push({ choice: teamsTruncated[i].venue.name, correct: teamsTruncated[i].name === teamName })
+    }
+    answer = randomizeArray(answer);
+    console.log(question);
+    console.log(answer);
+    dom.question.innerHTML = question;
+    for (i = 0; i < answer.length; i++) {
+        dom.answer[i].innerHTML = answer[i].choice;
     }
 }
 
-function answerClick(answer){
-    answer.domID.addEventListener("click", function(event){
-        document.getElementById("result").style.opacity=0;
-        setTimeout(function(){ 
-            if (answer.isCorrect){
-                document.getElementById("result").innerHTML = "Correct answer!!";
-                document.getElementById("result").style.opacity=1;
-                correctAnswers ++;
-                questionsAsked ++;
-            }
-            else{
-                document.getElementById("result").innerHTML = "Incorrect."
-                document.getElementById("result").style.opacity=1;
-                questionsAsked ++;
-            }
-        },500);
-    },);
+function answerClick(x) {
+    dom.answer[x].addEventListener("click", function (event) {
+        if (answered) { }
+        else if (answer[x].correct) {
+            dom.result.innerHTML = "Correct answer!!";
+            dom.answer[x].style.backgroundColor = "green";
+            answered = true;
+            score++;
+            total++;
+            dom.score.innerHTML = "Score: " + score + "/" + total;
+        }
+        else {
+            dom.result.innerHTML = "Incorrect.";
+            dom.answer[x].style.backgroundColor = "red";
+            answered = true;
+            total++;
+            dom.score.innerHTML = "Score: " + score + "/" + total;
+        }
+    });
+};
+
+document.getElementById("next-question").addEventListener("click", function (event) {
+    if (answered !== true) {
+        total++;
+        dom.score.innerHTML = "Score: " + score + "/" + total;
+    }
+    for (i = 0; i <= 3; i++) {
+        dom.answer[i].style.backgroundColor = "";
+        answered = false;
+        dom.result.innerHTML = "";
+    }
+    teamsQuestion();
+});
+
+function activateSelection() {
+    for (i = 0; i <= 3; i++) {
+        answerClick(i);
+    }
 }
 
-//const QUIZ_URL = "https://opentdb.com/api.php?amount=1&type=multiple";
 
+const TEAMS_URL = "https://statsapi.web.nhl.com/api/v1/teams";
 
-// const promise = fetch(QUIZ_URL);
-// promise
-// .then(function(response) {
-//     const processingPromise = response.json();
-//     return processingPromise;
-// })
-// .then(function(processedResponse) {
+function teamsQuestion() {
+    const promise = fetch(TEAMS_URL);
+    promise
+        .then(function (response) {
+            const processingPromise = response.json();
+            return processingPromise;
+        })
+        .then(function (processedResponse) {
+            arenaQuiz(processedResponse);
+            activateSelection();
+        });
+}
 
-//     console.log(processedResponse.results[0]);
-//     question.text=processedResponse.results[0].question;
-//     question.domID.innerHTML = question.text;
-//     answerA.text=processedResponse.results[0].correct_answer;
-//     questionsToDOM(answerA);
-//     answerB.text=processedResponse.results[0].incorrect_answers[0];
-//     questionsToDOM(answerB);
-//     answerC.text=processedResponse.results[0].incorrect_answers[1];
-//     questionsToDOM(answerC);
-//     answerD.text=processedResponse.results[0].incorrect_answers[2];
-//     questionsToDOM(answerD);
-// });
+teamsQuestion();
 
-randomizeQuestion();
-answerClick(answer.a);
-answerClick(answer.b);
-answerClick(answer.c);
-answerClick(answer.d);
-document.getElementById("next-question").addEventListener("click", function(event){
-    randomizeQuestion();
-    document.getElementById("result").innerHTML = "";
-});
+//replace all "document." DOM references with variables
